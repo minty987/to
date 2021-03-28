@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    //array for all numbers,one number one postion 
+    const numberSet4Sum = (numbers, picknumber, sum) => {
+      
+      const n = number => {//pick numbers,the numbers of 1
+        let c = 0;//console.log(number+"--");
+        while(number) {
+            number = number & (number - 1);//remove 1 of the rightest site
+            c++;// and then count 1 time
+        } 
+        return c;
+      }
+    
+      let len = numbers.length, postion = 1 << len, res = []
+      //console.log(postion);//mapping to 1=pick,0=not pick
+      for(let i = 1; i < postion; i++){//all postion
+        // pick numbers === picknumber
+        if(n(i) === picknumber){
+          let s = 0, temp = [];
+    
+          //check the sum of collection set(numbers of picked)
+          for(let j = 0; j < len; j++){
+            // find value of mapping postion
+            if((i & 1 << j) !== 0) {//make a mask of j postion to check picked or not
+              s += numbers[j];
+              temp.push(numbers[j]);
+            }
+          }
+          if(s === sum) {
+            res.push(temp);//push answer
+          }
+        }
+      }
+      return res
+    }
+    var sum=16;
+    var number=4;
+    var numbers=[2,9,6,8];
+
+</script>
+<div class="w3-container w3-light-gray">
+<label class="w3-text-teal" id="sumlab">SUM:</label><input class="w3-input" type="number" id="sum" value=15>
+<label class="w3-text-teal" id="sumlab">PICK:</label><input class="w3-input" type="number" id="picknumber" value=2>
+<label class="w3-text-teal"> </label>
+<button class="w3-btn w3-blue-grey" id="addnumber">add new number</button>
+<input class="w3-input" type="text" id="numberlist" value="2,9,6,8">
+<label id="numbers">ANSWER:</label>
+<label id="numbers"></label>
+</div>
+
+ 
+<script>
+$(document).ready(function(){
+
+$("#addnumber").click(function(){
+  number=parseInt($("#picknumber").val());
+  sum=parseInt($("#sum").val());  
+  numbers =JSON.parse("[" + $("#numberlist").val() + "]");
+
+  var answerlist=JSON.stringify(numberSet4Sum(numbers,number,sum));
+
+  console.log( answerlist);
+$("#numbers").html(answerlist);
+});
+});
+
+var answerlist=
+numberSet4Sum(numbers,number,sum);
+ 
+
+    function check(sum,numbers){
+
+        var res=0;
+        for (const key in numbers) {
+            if (Object.hasOwnProperty.call(numbers, key))
+             {           
+                 const element = numbers[key];
+                res+=element;
+                //console.log(res);
+            }
+        }
+        if(sum ==res) {console.log("[OK]  " + numbers+" is sum: "+sum);return true;}else{console.log("[fail] "+res+" is not sum: "+sum);return false;}
+    }
+</script>
+</html>
