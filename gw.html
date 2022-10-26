@@ -3,25 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <style type="text/css">
-    h2 {
-      position: absolute;
-      z-index: 10;
-      color: white;
-      top: 0px;
-      left: 0px;
-    }
 
-    canvas {
-      height: 100vh;
-      width: 100vw;
+    #text{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 10;
+      height: 100px;
+      width: 200px;
+
+    }
+    canvas#webgl {
+      height: 98vh;
+      width: 98vw;
     }
   </style>
 
-  <canvas></canvas>
-  <h2>Mouse</h2>
+  <canvas id="webgl"></canvas>
+  <canvas id="text"></canvas>  
 
   <script>
     "use strict";
+    var textCanvas = document.querySelector("#text");
+    var ctx = textCanvas.getContext("2d");
+    ctx.font = '50pt Arial';
+    ctx.fillStyle = 'rgba(255, 0, 0)';
+    
     function getMousePos(canvas, evt) {
       var rect = canvas.getBoundingClientRect();
       return {
@@ -29,12 +36,8 @@
         y: evt.clientY - rect.top
       };
     }
-    var canvas = document.getElementsByTagName("canvas")[0];
-    canvas.addEventListener("mousemove", function (evt) {
-      var mousePos = getMousePos(canvas, evt);
-      var message = "Mouse position: " + mousePos.x + "," + mousePos.y;
-      document.getElementsByTagName("h2")[0].innerText = message;
-    });
+    var canvas = document.querySelector("#webgl");
+
 
     canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight;
 
@@ -371,7 +374,11 @@
           var dy = 1000 * (Math.random() - 0.5);
 
           splat(x, y, dx, dy, color);
-        }
+        }        
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      }else{
+        ctx.fillText('FXTF', 10, 80);
+
       }
 
       advectionProgram.bind();
