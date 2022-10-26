@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <style type="text/css">
-
-    #text{
+    #text {
       position: absolute;
       left: 0px;
       top: 0px;
       z-index: 10;
-      height: 100px;
-      width: 200px;
+      height: 98vh;
+      width: 98vw;
+      pointer-events: none;
 
     }
+
     canvas#webgl {
       height: 98vh;
       width: 98vw;
@@ -20,15 +21,23 @@
   </style>
 
   <canvas id="webgl"></canvas>
-  <canvas id="text"></canvas>  
-
+  <canvas id="text"></canvas>
   <script>
     "use strict";
     var textCanvas = document.querySelector("#text");
     var ctx = textCanvas.getContext("2d");
-    ctx.font = '50pt Arial';
+    ctx.font = '20pt Arial';
     ctx.fillStyle = 'rgba(255, 0, 0)';
-    
+    var start = 5;
+    function frame() {
+      requestAnimationFrame(frame)
+      ctx.clearRect(0, 0, textCanvas.width, textCanvas.height)
+      start += 3;
+      ctx.fillText("FXTF", start, 150);
+      if (start > textCanvas.width) start = 0;
+    }
+    frame();
+
     function getMousePos(canvas, evt) {
       var rect = canvas.getBoundingClientRect();
       return {
@@ -37,7 +46,6 @@
       };
     }
     var canvas = document.querySelector("#webgl");
-
 
     canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight;
 
@@ -51,7 +59,7 @@
       SPLAT_RADIUS: 0.005
     };
 
-    var pointers = []; 
+    var pointers = [];
     var splatStack = [];
 
     var _getWebGLContext = getWebGLContext(canvas);
@@ -332,6 +340,7 @@
     }
 
     var blit = (function () {
+
       gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
       gl.bufferData(
         gl.ARRAY_BUFFER,
@@ -374,12 +383,10 @@
           var dy = 1000 * (Math.random() - 0.5);
 
           splat(x, y, dx, dy, color);
-        }        
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      }else{
-        ctx.fillText('FXTF', 10, 80);
-
+        }
       }
+
+
 
       advectionProgram.bind();
       gl.uniform2f(
@@ -494,6 +501,7 @@
     }
 
     function splat(x, y, dx, dy, color) {
+
       splatProgram.bind();
       gl.uniform1i(splatProgram.uniforms.uTarget, velocity.first[2]);
       gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
@@ -530,12 +538,12 @@
     var colorArr = [Math.random() + 0.2, Math.random() + 0.2, Math.random() + 0.2];
 
     canvas.addEventListener("mousemove", function (e) {
-//      count++;
+      //      count++;
 
-//      count > 25 &&
-//        ((colorArr = [Math.random() + 0.2,Math.random() + 0.2, Math.random() + 0.2 ]),
-//          (count = 0));
-//      if(count>25){        colorArr = [Math.random() + 0.2,Math.random() + 0.2, Math.random() + 0.2 ];        count = 0;      }
+      //      count > 25 &&
+      //        ((colorArr = [Math.random() + 0.2,Math.random() + 0.2, Math.random() + 0.2 ]),
+      //          (count = 0));
+      //      if(count>25){        colorArr = [Math.random() + 0.2,Math.random() + 0.2, Math.random() + 0.2 ];        count = 0;      }
 
 
       pointers[0].down = true;
