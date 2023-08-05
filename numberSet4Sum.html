@@ -4,6 +4,19 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+
+  // Get the button element
+const generateButton = document.getElementById('generate');
+
+// Add a click event listener to the button
+generateButton.addEventListener('click', () => {
+  // Generate an array of 20 random numbers between 1 and 25
+  const numbers = Array.from({ length: 20 }, () => Math.floor(Math.random() * 25) + 1);
+
+  // Set the value of the numberlist input to the generated array
+  const numberlistInput = document.getElementById('numberlist');
+  numberlistInput.value = numbers.join(',');
+});
     //array for all numbers,one number one postion 
     const numberSet4Sum = (numbers, picknumber, sum) => {
       
@@ -48,9 +61,11 @@
 <label class="w3-text-teal" id="sumlab">PICK:</label><input class="w3-input" type="number" id="picknumber" value=2>
 <label class="w3-text-teal"> </label>
 <button class="w3-btn w3-blue-grey" id="addnumber">add new number</button>
-<input class="w3-input" type="text" id="numberlist" value="2,9,6,8">
+<input class="w3-input" type="text" id="numberlist" value="">
+<button id="generate">Generate Numbers</button>
 <label id="numbers">ANSWER:</label>
 <label id="numbers"></label>
+
 </div>
 
  
